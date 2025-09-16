@@ -13,6 +13,7 @@ import { ProfileSetup } from "./pages/candidate/ProfileSetup";
 import { Quiz } from "./pages/candidate/Quiz";
 import { Documents } from "./pages/candidate/Documents";
 import { AdminDashboard } from "./pages/admin/Dashboard";
+import { Jobs } from "./pages/admin/Jobs";
 
 import "./App.css";
 
@@ -64,6 +65,38 @@ function App() {
             {/* Protected Admin Routes */}
             <Route
               path="/admin/dashboard"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/jobs"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Jobs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/candidates"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/quizzes"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/documents"
               element={
                 <ProtectedRoute requiredRole="admin">
                   <AdminDashboard />
