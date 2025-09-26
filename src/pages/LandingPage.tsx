@@ -9,7 +9,7 @@ import {
   Shield,
   Sun,
   Moon,
-  DrillIcon,
+  Wrench,
 } from "lucide-react";
 import gsap from "gsap";
 
@@ -110,6 +110,18 @@ export const LandingPage: React.FC = () => {
               <Link to="/candidate/auth">
                 <Users className="h-5 w-5 mr-2" />
                 Driver Portal
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 py-4 hover:scale-105 transition-transform"
+            >
+              <Link to="/welder/auth">
+                <Wrench className="h-5 w-5 mr-2" />
+                Welder Portal
               </Link>
             </Button>
           </div>

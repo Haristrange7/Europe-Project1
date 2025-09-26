@@ -3,8 +3,9 @@ import { User } from '@/types';
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string, role: 'candidate' | 'admin') => Promise<boolean>;
+  login: (email: string, password: string, role: 'candidate' | 'welder' | 'admin') => Promise<boolean>;
   register: (email: string, password: string, phone?: string) => Promise<boolean>;
+  registerWelder: (email: string, password: string, phone?: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -60,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return true;
         }
         return false;
-      } else {
+      } else if (role === 'candidate') {
         // Candidate login
         const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
         const foundUser = users.find(u => 
@@ -73,6 +74,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(foundUser);
           setIsAuthenticated(true);
           localStorage.setItem('auth_token', `candidate-token-${foundUser.id}`);
+          localStorage.setItem('user_data', JSON.stringify(foundUser));
+          return true;
+        }
+        return false;
+      } else if (role === 'welder') {
+        // Welder login
+        const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+        const foundUser = users.find(u => 
+          (u.email === email || u.phone === email) && 
+          u.password === password && 
+          u.role === 'welder'
+        );
+        
+        if (foundUser) {
+          setUser(foundUser);
+          setIsAuthenticated(true);
+          localStorage.setItem('auth_token', `welder-token-${foundUser.id}`);
           localStorage.setItem('user_data', JSON.stringify(foundUser));
           return true;
         }
@@ -113,6 +131,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const registerWelder = async (email: string, password: string, phone?: string): Promise<boolean> => {
+    try {
+      const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+      
+      // Check if user already exists
+      const existingUser = users.find(u => u.email === email || (phone && u.phone === phone));
+      if (existingUser) {
+        return false;
+      }
+      
+      const newUser: User = {
+        id: `welder-${Date.now()}`,
+        email,
+        phone,
+        password,
+        role: 'welder',
+        createdAt: new Date().toISOString(),
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      return true;
+    } catch (error) {
+      console.error('Registration error:', error);
+      return false;
+    }
+  };
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
@@ -125,6 +171,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       user,
       login,
       register,
+      registerWelder,
       logout,
       isAuthenticated,
     }}>

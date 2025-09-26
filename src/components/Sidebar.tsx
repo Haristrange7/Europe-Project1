@@ -32,16 +32,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   const adminNavItems = [
     { title: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { title: "Jobs", href: "/admin/jobs", icon: Briefcase },
+    { title: "Quiz Management", href: "/admin/quiz", icon: Award },
+    { title: "Documents", href: "/admin/documents", icon: Upload },
   ];
 
   const candidateNavItems = [
     { title: "Dashboard", href: "/candidate/dashboard", icon: LayoutDashboard },
     { title: "Profile", href: "/candidate/profile", icon: User },
-    { title: "Quiz", href: "/candidate/quiz", icon: Award },
     { title: "Documents", href: "/candidate/documents", icon: Upload },
+    { title: "Quiz", href: "/candidate/quiz", icon: Award },
+    { title: "Practice", href: "/candidate/practice", icon: Award },
   ];
 
-  const navItems = user?.role === "admin" ? adminNavItems : candidateNavItems;
+  const welderNavItems = [
+    { title: "Dashboard", href: "/welder/dashboard", icon: LayoutDashboard },
+    { title: "Profile", href: "/welder/profile", icon: User },
+    { title: "Documents", href: "/welder/documents", icon: Upload },
+    { title: "Quiz", href: "/welder/quiz", icon: Award },
+    { title: "Practice", href: "/welder/practice", icon: Award },
+  ];
+
+  const navItems = user?.role === "admin" ? adminNavItems : 
+                   user?.role === "welder" ? welderNavItems : candidateNavItems;
 
   return (
     <div

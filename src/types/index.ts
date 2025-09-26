@@ -3,7 +3,7 @@ export interface User {
   email: string;
   phone?: string;
   password: string;
-  role: 'candidate' | 'admin';
+  role: 'candidate' | 'welder' | 'admin';
   createdAt: string;
 }
 
@@ -51,8 +51,61 @@ export interface CandidateProfile {
     healthCertificates?: File;
     vsfProof?: File;
   };
-  status: 'incomplete' | 'quiz_pending' | 'documents_pending' | 'under_review' | 'approved' | 'rejected' | 'employee';
+  status: 'incomplete' | 'documents_pending' | 'documents_under_review' | 'documents_approved' | 'quiz_pending' | 'under_review' | 'approved' | 'rejected' | 'employee';
   completedAt?: string;
+  documentsStatus?: 'pending' | 'approved' | 'rejected';
+  documentsRejectionReason?: string;
+}
+
+export interface WelderProfile {
+  userId: string;
+  personal: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    contactNumber: string;
+  };
+  passport: {
+    type: string;
+    countryCode: string;
+    number: string;
+    fullName: string;
+    photograph?: File;
+    nationality: string;
+    dateOfBirth: string;
+    placeOfBirth: string;
+    sex: 'male' | 'female' | 'other';
+    dateOfIssue: string;
+    dateOfExpiry: string;
+    placeOfIssue: string;
+    fatherName: string;
+    spouseName?: string;
+    address: string;
+    signature?: File;
+  };
+  experience: {
+    introVideo?: File;
+    weldingProofVideo?: File;
+  };
+  quizScore?: number;
+  agreements: {
+    workContract: boolean;
+    accommodation: boolean;
+    invitation: boolean;
+  };
+  documents: {
+    experienceCertificate?: File;
+    pcc?: File;
+    itr?: File;
+    travelTickets?: File;
+    healthCertificates?: File;
+    vsfProof?: File;
+    weldingCertificates?: File;
+  };
+  status: 'incomplete' | 'documents_pending' | 'documents_under_review' | 'documents_approved' | 'quiz_pending' | 'under_review' | 'approved' | 'rejected' | 'employee';
+  completedAt?: string;
+  documentsStatus?: 'pending' | 'approved' | 'rejected';
+  documentsRejectionReason?: string;
 }
 
 export interface Job {
@@ -78,6 +131,10 @@ export interface Application {
 export interface QuizQuestion {
   id: string;
   question: string;
+  image?: string; // URL or base64 string
   options: string[];
   correctAnswer: number;
+  type: 'driver' | 'welder';
+  createdBy: string;
+  createdAt: string;
 }
