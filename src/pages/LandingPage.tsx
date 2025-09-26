@@ -1,19 +1,22 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/contexts/ThemeContext";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Truck, Users, MapPin, Shield } from "lucide-react";
+  Truck,
+  Users,
+  MapPin,
+  Shield,
+  Sun,
+  Moon,
+  DrillIcon,
+} from "lucide-react";
 import gsap from "gsap";
 
 export const LandingPage: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -53,12 +56,29 @@ export const LandingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      {/* Theme Toggle Button */}
+      <Button
+        variant="ghost"
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 z-20 p-2"
+        aria-label="Toggle theme"
+      >
+        {theme === "dark" ? (
+          <Sun className="h-5 w-5" />
+        ) : (
+          <Moon className="h-5 w-5" />
+        )}
+      </Button>
+
       {/* Hero Section */}
-      <section ref={heroRef} className="relative overflow-hidden py-20 px-4">
+      <section
+        ref={heroRef}
+        className=" overflow-hidden py-20 px-4 min-h-[90vh] flex items-center justify-center relative"
+      >
         <div className="container mx-auto text-center relative z-10">
           <div className="hero-title mb-6">
-            <Truck className="h-20 w-20 mx-auto mb-6 text-primary animate-pulse" />
+            <Truck className="h-20 w-20 mx-auto mb-6 text-primary" />
             <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-4">
               DriveVault Recruit
             </h1>
@@ -70,7 +90,11 @@ export const LandingPage: React.FC = () => {
           </p>
 
           <div className="hero-buttons flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <Button asChild size="lg" className="text-lg px-8 py-4">
+            <Button
+              asChild
+              size="lg"
+              className="text-lg px-8 py-4 hover:scale-105 transition-transform"
+            >
               <Link to="/admin/login">
                 <Shield className="h-5 w-5 mr-2" />
                 Admin Login
@@ -81,7 +105,7 @@ export const LandingPage: React.FC = () => {
               asChild
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-4"
+              className="text-lg px-8 py-4 hover:scale-105 transition-transform"
             >
               <Link to="/candidate/auth">
                 <Users className="h-5 w-5 mr-2" />
@@ -90,78 +114,10 @@ export const LandingPage: React.FC = () => {
             </Button>
           </div>
         </div>
-
-        {/* Background decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section ref={cardsRef} className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose Europe Truck Project?
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We provide comprehensive support and opportunities for
-              professional truck drivers looking to advance their careers in
-              Europe.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="feature-card border-2 hover:border-primary/50 transition-all duration-300">
-              <CardHeader className="text-center">
-                <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-xl">
-                  European Opportunities
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Access to truck driving opportunities across multiple European
-                  countries with verified employers and competitive
-                  compensation.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="feature-card border-2 hover:border-primary/50 transition-all duration-300">
-              <CardHeader className="text-center">
-                <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-xl">Verified Process</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Complete verification process including skills assessment,
-                  document validation, and employer background checks for your
-                  safety.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="feature-card border-2 hover:border-primary/50 transition-all duration-300">
-              <CardHeader className="text-center">
-                <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-xl">Complete Support</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  From application to employment, we provide accommodation
-                  assistance, work contracts, and ongoing support throughout
-                  your journey.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t py-8 px-4">
+      <footer className="bg-card border-t  py-8 px-4">
         <div className="container mx-auto text-center">
           <p className="text-muted-foreground">
             © 2025 Sholas Technologies. All rights reserved.

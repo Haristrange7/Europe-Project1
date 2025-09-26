@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Users, 
-  Briefcase, 
-  CheckCircle, 
+import React, { useState, useEffect } from "react";
+import { Layout } from "@/components/Layout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Users,
+  Briefcase,
+  CheckCircle,
   Clock,
   TrendingUp,
   Award,
   FileText,
-  UserCheck
-} from 'lucide-react';
-import { storageUtils } from '@/utils/storage';
-import { CandidateProfile, Job } from '@/types';
-import { Link } from 'react-router-dom';
-import gsap from 'gsap';
+  UserCheck,
+} from "lucide-react";
+import { storageUtils } from "@/utils/storage";
+import { CandidateProfile, Job } from "@/types";
+import { Link } from "react-router-dom";
+import gsap from "gsap";
 
 export const AdminDashboard: React.FC = () => {
   const [profiles, setProfiles] = useState<CandidateProfile[]>([]);
@@ -32,9 +38,10 @@ export const AdminDashboard: React.FC = () => {
     loadData();
 
     // Animate dashboard cards
-    gsap.fromTo('.dashboard-card', 
+    gsap.fromTo(
+      ".dashboard-card",
       { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' }
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" }
     );
   }, []);
 
@@ -48,15 +55,29 @@ export const AdminDashboard: React.FC = () => {
     // Calculate stats
     setStats({
       totalCandidates: allProfiles.length,
-      pendingReview: allProfiles.filter(p => p.status === 'under_review').length,
-      approved: allProfiles.filter(p => p.status === 'approved' || p.status === 'employee').length,
-      activeJobs: allJobs.filter(j => j.status === 'active').length,
-      completedQuizzes: allProfiles.filter(p => p.quizScore !== undefined).length,
-      documentsSubmitted: allProfiles.filter(p => p.documents.experienceCertificate).length,
+      pendingReview: allProfiles.filter((p) => p.status === "under_review")
+        .length,
+      approved: allProfiles.filter(
+        (p) => p.status === "approved" || p.status === "employee"
+      ).length,
+      activeJobs: allJobs.filter((j) => j.status === "active").length,
+      completedQuizzes: allProfiles.filter((p) => p.quizScore !== undefined)
+        .length,
+      documentsSubmitted: allProfiles.filter(
+        (p) => p.documents.experienceCertificate
+      ).length,
     });
   };
 
-  const StatCard = ({ title, value, description, icon: Icon, color, trend, link }: {
+  const StatCard = ({
+    title,
+    value,
+    description,
+    icon: Icon,
+    color,
+    trend,
+    link,
+  }: {
     title: string;
     value: number;
     description: string;
@@ -66,13 +87,13 @@ export const AdminDashboard: React.FC = () => {
     link?: string;
   }) => (
     <Card className="dashboard-card shadow-soft hover:shadow-medium transition-all cursor-pointer">
-      <Link to={link || '#'}>
+      <Link to={link || "#"}>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-              <p className="text-3xl font-bold text-gray-900 mb-1">{value}</p>
-              <p className="text-sm text-gray-500">{description}</p>
+              <p className="text-sm font-medium text-primary-foreground mb-1">{title}</p>
+              <p className="text-3xl font-bold text-primary mb-1">{value}</p>
+              <p className="text-sm text-primary-foreground/60">{description}</p>
               {trend && (
                 <div className="flex items-center mt-2">
                   <TrendingUp className="h-4 w-4 text-success-600 mr-1" />
@@ -90,11 +111,18 @@ export const AdminDashboard: React.FC = () => {
   );
 
   const recentCandidates = profiles
-    .sort((a, b) => new Date(b.completedAt || '').getTime() - new Date(a.completedAt || '').getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.completedAt || "").getTime() -
+        new Date(a.completedAt || "").getTime()
+    )
     .slice(0, 5);
 
   const recentJobs = jobs
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
     .slice(0, 3);
 
   return (
@@ -102,13 +130,16 @@ export const AdminDashboard: React.FC = () => {
       <div className="space-y-8">
         {/* Welcome Section */}
         <div className="dashboard-card">
-          <Card className="bg-gradient-to-r from-brand-600 to-blue-600 text-white shadow-large">
+          <Card className="bg-gradient-to-l from-primary to-primary text-white shadow-large">
             <CardContent className="p-8">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center text-start justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">Welcome back, Admin!</h2>
+                  <h2 className="text-2xl font-bold mb-2">
+                    Welcome back, Admin!
+                  </h2>
                   <p className="text-brand-100 text-lg">
-                    Here's what's happening with your recruitment platform today.
+                    Here's what's happening with your recruitment platform
+                    today.
                   </p>
                 </div>
                 <div className="hidden md:block">
@@ -191,33 +222,42 @@ export const AdminDashboard: React.FC = () => {
             <CardContent>
               {recentCandidates.length === 0 ? (
                 <div className="text-center py-8">
-                  <Users className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-500">No candidates yet</p>
+                  <Users className="h-12 w-12 mx-auto text-primary-foreground mb-4" />
+                  <p className="text-primary-foreground/80">No candidates yet</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {recentCandidates.map((candidate) => (
-                    <div key={candidate.userId} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div
+                      key={candidate.userId}
+                      className="flex items-center justify-between p-3 bg-primary rounded-lg"
+                    >
                       <div className="flex items-center space-x-3">
                         <div className="h-10 w-10 bg-brand-100 rounded-full flex items-center justify-center">
                           <Users className="h-5 w-5 text-brand-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">
-                            {candidate.personal.firstName} {candidate.personal.lastName}
+                          <p className="font-medium text-primary-foreground">
+                            {candidate.personal.firstName}{" "}
+                            {candidate.personal.lastName}
                           </p>
-                          <p className="text-sm text-gray-500">{candidate.personal.email}</p>
+                          <p className="text-sm text-primary-foreground/80">
+                            {candidate.personal.email}
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                          candidate.status === 'approved' || candidate.status === 'employee' 
-                            ? 'bg-success-100 text-success-800'
-                            : candidate.status === 'under_review'
-                            ? 'bg-warning-100 text-warning-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {candidate.status.replace('_', ' ')}
+                        <div
+                          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                            candidate.status === "approved" ||
+                            candidate.status === "employee"
+                              ? "bg-success-100 text-success-800"
+                              : candidate.status === "under_review"
+                              ? "bg-warning-100 text-warning-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {candidate.status.replace("_", " ")}
                         </div>
                         {candidate.quizScore && (
                           <p className="text-xs text-gray-500 mt-1">
@@ -257,20 +297,30 @@ export const AdminDashboard: React.FC = () => {
               ) : (
                 <div className="space-y-4">
                   {recentJobs.map((job) => (
-                    <div key={job.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div
+                      key={job.id}
+                      className="p-4 border border-ring rounded-lg hover:bg-primary transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900 mb-1">{job.title}</h4>
-                          <p className="text-sm text-gray-600 mb-2">{job.location}</p>
-                          <p className="text-xs text-gray-500">
-                            Created {new Date(job.createdAt).toLocaleDateString()}
+                          <h4 className="font-medium text-primary-foreground mb-1">
+                            {job.title}
+                          </h4>
+                          <p className="text-sm text-primary-foreground/80 mb-2">
+                            {job.location}
+                          </p>
+                          <p className="text-xs text-primary-foreground/60">
+                            Created{" "}
+                            {new Date(job.createdAt).toLocaleDateString()}
                           </p>
                         </div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          job.status === 'active' 
-                            ? 'bg-success-100 text-success-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
+                        <div
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            job.status === "active"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-destructive text-destructive-foreground"
+                          }`}
+                        >
                           {job.status}
                         </div>
                       </div>

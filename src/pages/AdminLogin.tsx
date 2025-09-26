@@ -11,16 +11,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Shield, ArrowLeft } from "lucide-react";
+import { Shield, ArrowLeft, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import gsap from "gsap";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,8 +59,22 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="login-card w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 ">
+      <Card className="login-card w-full max-w-md relative">
+        {/* Theme Toggle Button */}
+        <Button
+          variant="ghost"
+          onClick={toggleTheme}
+          className="absolute top-4 right-4 p-2"
+          aria-label="Toggle theme"
+        >
+          {theme === "dark" ? (
+            <Sun className="h-5 w-5" />
+          ) : (
+            <Moon className="h-5 w-5" />
+          )}
+        </Button>
+
         <CardHeader className="text-center space-y-4">
           <Shield className="h-16 w-16 mx-auto text-primary" />
           <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
@@ -103,8 +119,13 @@ export const AdminLogin: React.FC = () => {
               Demo credentials: admin@sholas.io / admin123
             </p>
 
-            <Button asChild variant="ghost" size="sm">
-              <Link to="/" className="flex items-center">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-primary mt-2"
+            >
+              <Link to="/" className="flex items-center ">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Home
               </Link>

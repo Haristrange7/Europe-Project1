@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Layout } from "./components/Layout";
 import { Toaster } from "sonner";
 
 // Pages
@@ -19,9 +21,9 @@ import "./App.css";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-background text-foreground w-full">
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<LandingPage />} />
@@ -104,11 +106,10 @@ function App() {
               }
             />
           </Routes>
-
           <Toaster richColors position="top-right" />
-        </div>
-      </Router>
-    </AuthProvider>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
