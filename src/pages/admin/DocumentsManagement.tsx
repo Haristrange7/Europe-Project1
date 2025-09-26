@@ -27,16 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  FileText,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Users,
-  Eye,
-  User,
-  Wrench,
-} from "lucide-react";
+import { FileText, CircleCheck as CheckCircle, Circle as XCircle, Clock, Users, Eye, User, Wrench } from "lucide-react";
 import { storageUtils } from "@/utils/storage";
 import { CandidateProfile, WelderProfile } from "@/types";
 import { toast } from "sonner";
